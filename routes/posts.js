@@ -11,16 +11,20 @@ router.post("/new", upload.array("pictures"), async (req, res) => {
     const { sellerId, title, descreption, prize } = req.body;
 
     uploadToCloudinary(req.files, async (pictures) => {
-      const newPost = await Post({
-        sellerId,
-        title,
-        descreption,
-        prize,
-        pictures,
-      });
+      try {
+        const newPost = await Post({
+          sellerId,
+          title,
+          descreption,
+          prize,
+          pictures,
+        });
 
-      await newPost.save();
-      res.send({ ok: "Post stored to db" });
+        await newPost.save();
+        res.status(201).send({ ok: "Post stored to db" });
+      } catch (error) {
+        console.log(error);
+      }
     });
   } catch (error) {
     console.log(error);
@@ -29,7 +33,7 @@ router.post("/new", upload.array("pictures"), async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    const allPosts = await Post.find({});
+    const allPosts = await Post.find({}).populate("sellerId");
     res.send(allPosts);
   } catch (error) {
     console.log("Error fetching posts", error);

@@ -1,4 +1,5 @@
 require("dotenv").config();
+var cors = require("cors");
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
@@ -9,13 +10,14 @@ const post = require("./routes/posts");
 
 const app = express();
 app.use(bodyParser.json());
+app.use(cors());
 
 app.get("/", (req, res) => {
   res.send("Working !!!");
 });
 
 app.use("/auth", auth);
-app.use("/post", post);
+app.use("/posts", post);
 
 mongoose.connect(process.env.DATABASE_URL, (err) => {
   if (!err) {
@@ -31,5 +33,5 @@ mongoose.connect(process.env.DATABASE_URL, (err) => {
         api_secret: process.env.CLOUDINARY_AIP_SECRET,
       });
     });
-  }
+  } else console.log(err);
 });

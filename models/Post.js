@@ -6,6 +6,10 @@ const postScheam = mongoose.Schema({
   pictures: [String],
   descreption: String,
   prize: String,
+  createdAt: {
+    type: Date,
+    default: Date.now(),
+  },
 });
 
 const Post = new mongoose.model("posts", postScheam);

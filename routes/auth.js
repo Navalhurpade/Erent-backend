@@ -31,6 +31,7 @@ router.post("/register", upload.single("profile_pic"), async (req, res) => {
     const hashedPass = await bcrypt.hash(password, slatingRounds);
 
     let optionalData = {};
+    console.log(req.file, req.body);
 
     if (req.file) {
       const uploadedImage = await cloudinary.uploader.upload(
@@ -68,7 +69,7 @@ router.post("/", async (req, res) => {
     const foundUser = await User.findOne({ email: email });
 
     if (!foundUser)
-      return res.status(404).send({ error: "invalid email or password" });
+      return res.status(400).send({ error: "invalid email or password" });
 
     const match = bcrypt.compare(password, foundUser.password);
 
@@ -77,6 +78,7 @@ router.post("/", async (req, res) => {
 
     const token = jwt.sign(
       {
+        _id: foundUser._id,
         name: foundUser.name,
         role: foundUser.role,
         email: foundUser.email,
