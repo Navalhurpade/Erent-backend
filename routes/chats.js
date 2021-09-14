@@ -35,7 +35,7 @@ router.post("/", async (req, res) => {
   //then looping over all users and extracting all chats revent to them !
   for (let key in users) {
     const usersMessages = filteredMessage.filter((m) =>
-      m.participents.includes(userId)
+      m.participents.includes(users[key]._id)
     );
 
     const chatsWithThisUser = {

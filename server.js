@@ -88,10 +88,10 @@ io.on("connection", (client) => {
       if (err) return console.log(err);
     });
 
-    if (userMap.has(message.to)) {
-      // console.log("broadcasting to ", userMap.get(message.to).socketId);
+    //if reciver is online broadcasting that message !
+    if (userMap.has(message.to._id)) {
       client.broadcast
-        .to(userMap.get(message.to).socketId)
+        .to(userMap.get(message.to._id).socketId)
         .emit("message-recive", message);
     }
   });
